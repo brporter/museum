@@ -1,5 +1,5 @@
 
-namespace api;
+namespace Museum.WebApi;
 
 public class Program
 {
