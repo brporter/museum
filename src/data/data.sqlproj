@@ -64,6 +64,7 @@
   <ItemGroup>
     <Build Include="container.sql" />
     <Build Include="container_type.sql" />
+    <Build Include="EstablishTenant.sql" />
     <Build Include="item.sql" />
     <Build Include="item_field.sql" />
     <Build Include="tenant.sql" />
