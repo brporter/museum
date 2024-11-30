@@ -16,16 +16,27 @@ public class TenantTests
     }
 
     [Fact]
-    [Trait("Data", "Integration")]
+    [Trait("Category", "Integration")]
     public async Task Establish_Tenant()
     {
         // Arrange
 
         // Act
         var command = new EstablishTenantCommand(_databaseFixture.Broker);
-        var result = await command.ExecuteAsync(new TenantDto { Name = "Test" });
+        var tenant = new TenantDto { Name = "Test" };
+        await command.ExecuteAsync(tenant);
 
         // Assert
-        Assert.True(result > 0);
+        Assert.True(tenant.TenantId > 0);
+        Assert.Equal("Test", tenant.Name);
+
+        // Assert that the CreatedAt and UpdatedAt properties are set to reasonable values
+        Assert.True(tenant.CreatedAt < DateTime.UtcNow);
+        Assert.True(tenant.UpdatedAt < DateTime.UtcNow);
+        Assert.True(tenant.CreatedAt == tenant.UpdatedAt);
+        Assert.True(tenant.IsEnabled);
+
+        // This is going to be flaky if the test pauses for some reason during execution
+        Assert.True(tenant.CreatedAt > DateTime.UtcNow.AddMinutes(-1));
     }
 }
