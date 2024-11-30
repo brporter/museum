@@ -12,6 +12,8 @@ public class DatabaseFixture
 {
     public DatabaseFixture()
     {
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
         ConfigurationBuilder builder = new();
         builder.AddJsonFile("appsettings.json");
         builder.AddJsonFile("appsettings.Development.json");

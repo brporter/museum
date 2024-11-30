@@ -1,6 +1,7 @@
 ﻿using Museum.Data;
 using Museum.WebApi.Models;
 using Museum.Data.Commands;
+using Museum.Data.Queries;
 using Microsoft.Extensions.Configuration;
 
 namespace Museum.Tests.Api;
@@ -23,8 +24,7 @@ public class TenantTests
 
         // Act
         var command = new EstablishTenantCommand(_databaseFixture.Broker);
-        var tenant = new TenantDto { Name = "Test" };
-        await command.ExecuteAsync(tenant);
+        var tenant = await command.ExecuteAsync("Test");
 
         // Assert
         Assert.True(tenant.TenantId > 0);
@@ -38,5 +38,18 @@ public class TenantTests
 
         // This is going to be flaky if the test pauses for some reason during execution
         Assert.True(tenant.CreatedAt > DateTime.UtcNow.AddMinutes(-1));
+    }
+
+    [Fact]
+    [Trait("Category", "Integration")]
+    public async Task Query_Tenant()
+    {
+        var command = new EstablishTenantCommand(_databaseFixture.Broker);
+        var tenant = await command.ExecuteAsync("Test");
+
+        var query = new QueryTenantCommand(_databaseFixture.Broker);
+        var otherTenant = await query.ExecuteAsync(tenant.TenantId);
+
+        Assert.Equal(tenant, otherTenant);
     }
 }

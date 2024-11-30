@@ -67,6 +67,7 @@
     <Build Include="EstablishTenant.sql" />
     <Build Include="item.sql" />
     <Build Include="item_field.sql" />
+    <Build Include="QueryTenant.sql" />
     <Build Include="tenant.sql" />
     <Build Include="type.sql" />
     <Build Include="type_field.sql" />
